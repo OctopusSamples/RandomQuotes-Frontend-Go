@@ -21,10 +21,11 @@ jobs:
         run: go build server.go
 
       - name: Create package
-        run: tar -cjf randomquotes.tar.bz2 server web
+        run: tar -cjf randomquotes.tar.bz2 server data
 
       - name: Create Release
         id: create_release
+        if: github.ref == 'refs/heads/main'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,6 +37,7 @@ jobs:
 
       - name: Upload Release Asset
         id: upload-release-asset
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -52,6 +54,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Main build and push
+        if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v2
         with:
           push: true
@@ -59,8 +62,19 @@ jobs:
           tags: octopussamples/randomquotesfrontendgo:0.1.${{ github.run_number }}
 
       - name: Main build and push latest
+        if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v2
         with:
           push: true
           build-args: VERSION=0.1.${{ github.run_number }}
           tags: octopussamples/randomquotesfrontendgo:latest
+
+      - name: Branch build and push
+        if: github.ref != 'refs/heads/main'
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          build-args: VERSION=0.1.${{ github.run_number }}-${{ env.BRANCH_NAME }}
+          tags: octopussamples/randomquotesfrontendgo:0.1.${{ github.run_number }}-${{ env.BRANCH_NAME }}
+
+
