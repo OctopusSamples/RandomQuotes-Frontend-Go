@@ -2,8 +2,14 @@ version: "3.9"
 services:
   backend:
     image: "octopussamples/randomquotesbackendgo"
+    environment:
+      PORT: 8082
+    ports:
+      - "8082:8082"
   frontend:
     image: "octopussamples/randomquotesfrontendgo"
     environment:
-      APIENDPOINT: http://localhost:8080/api/quote
+      APIENDPOINT: http://localhost:8082/api/quote
       PORT: 8081
+    ports:
+      - "8081:8081"
