@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  backend:
+    image: "octopussamples/randomquotesbackendgo"
+  frontend:
+    image: "octopussamples/randomquotesfrontendgo"
+    environment:
+      APIENDPOINT: http://localhost:8080/api/quote
+      PORT: 8081
