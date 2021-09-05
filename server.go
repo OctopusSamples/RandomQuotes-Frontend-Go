@@ -21,7 +21,7 @@ func main() {
 
 	fmt.Printf("Starting server at port " + port + "\n")
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		fmt.Fprintln(os.Stderr, "Error: Unable to bind to the port "+port)
+		log.Printf("Error: Unable to bind to the port " + port)
 		log.Fatal(err)
 	}
 }
@@ -29,7 +29,7 @@ func main() {
 func getApiEndpoint() string {
 	endpoint := os.Getenv("APIENDPOINT")
 	if endpoint == "" {
-		fmt.Fprintln(os.Stderr, "Error: The APIENDPOINT environment variable was not set.")
+		log.Printf("Error: The APIENDPOINT environment variable was not set.")
 		endpoint = "/api/quote"
 	}
 	return endpoint
