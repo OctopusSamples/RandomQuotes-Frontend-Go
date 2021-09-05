@@ -28,6 +28,7 @@ func main() {
 func getApiEndpoint() string {
 	endpoint := os.Getenv("APIENDPOINT")
 	if endpoint == "" {
+		fmt.Fprintln(os.Stderr, "Error: The APIENDPOINT environment variable was not set.")
 		endpoint = "/api/quote"
 	}
 	return endpoint
